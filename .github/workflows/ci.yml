@@ -29,3 +29,8 @@ jobs:
 
       - run: |
           pytest services/${{ matrix.service }}
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.service }}-${{ matrix.python-version }}-test-raport
+          path: services/${{ matrix.service }}

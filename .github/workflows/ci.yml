@@ -29,10 +29,18 @@ jobs:
           pip install -r services/${{ matrix.service }}/requirements.txt
 
       - shell: bash
-        run: pytest -rA services/${{ matrix.service}} | tee ${{ matrix.service}}-test-report.txt   
+        run: pytest -rA services/${{ matrix.service }} | tee ${{ matrix.service }}-test-report.txt   
       - name: Upload artifact
         uses: actions/upload-artifact@v7
         if: always()
         with:
           name: ${{ matrix.service }}-${{ matrix.python-version }}-test-report
           path: ${{ matrix.service }}-test-report.txt
+
+      - run: pip install bandit
+      - run: bandit -r services/${{ matrix.service }} -f html -o ${{ matrix.service }}-bandit-report.html  
+        continue-on-error: true
+      - uses: actions/upload-artifact@v7
+        with:
+          name: ${{ matrix.service }}-bandit-report
+          path: ${{ matrix.service }}-bandit-report.html

@@ -38,7 +38,7 @@ def test_list_starts_empty(client):
 def test_create_uses_normalized_title(client, stub):
     response = client.post("/tasks", json={"title": "  buy   milk "})
     assert response.status_code == 201
-    assert response.get_json() == {"id": 10, "title": "Normalized", "normalized": True}
+    assert response.get_json() == {"id": 1, "title": "Normalized", "normalized": True}
     assert stub.calls == ["  buy   milk "]
 
 

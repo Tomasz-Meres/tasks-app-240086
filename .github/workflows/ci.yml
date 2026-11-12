@@ -35,4 +35,4 @@ jobs:
         if: always()
         with:
           name: ${{ matrix.service }}-${{ matrix.python-version }}-test-report
-          path: services/${{ matrix.service }}-test-report.txt
+          path: ${{ matrix.service }}-test-report.txt

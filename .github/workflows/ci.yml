@@ -48,6 +48,6 @@ jobs:
       - run: mv _site/tasks-api-3.12-bandit-report.html _site/index.html
       - name: Upload pages artifact
         uses: actions/upload-pages-artifact@5
-        wtih:
+        with:
           path: _site
       - uses: actions/deploy-pages@5

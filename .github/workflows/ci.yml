@@ -53,6 +53,12 @@ jobs:
         with:
           name: tasks-api-3.12-bandit-report
           path: _site
+      - run: |
+          cat > _site/index.html << 'EOF' 
+          <h1>Bandit reports></h1>
+          <p><a href="tasks-api-3.12-bandit-report">tasks-api</a></p>
+          <p><a href="title-normalizer-3.12-bandit-report">title-normalizer</a></p>
+          EOF
       - name: Download Bandit Report as Artifact
         uses: actions/download-artifact@v7
         with:

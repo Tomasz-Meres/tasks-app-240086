@@ -4,6 +4,10 @@ on:
   push:
     branches:
       - main
+    pull_request:
+      types: [opened, synchronize, closed]
+      branches:
+        - main
 
 jobs:
   run_tests:
@@ -35,19 +39,28 @@ jobs:
           path: ${{matrix.service}}-${{matrix.python-version}}-bandit-report.html
   deploy:
     needs: ["run_tests"]  
+#    if: github.event.pull_request.merge == true
     runs-on: ubuntu-latest
     permissions: 
       pages: write
       id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Download Bandit Report as Artifact
         uses: actions/download-artifact@v7
         with:
           name: tasks-api-3.12-bandit-report
           path: _site
-      - run: mv _site/tasks-api-3.12-bandit-report.html _site/index.html
+      - name: Download Bandit Report as Artifact
+        uses: actions/download-artifact@v7
+        with:
+          name: title-normalizer-3.12-bandit-report
+          path: _site
       - name: Upload pages artifact
         uses: actions/upload-pages-artifact@v5
         with:
           path: _site
-      - uses: actions/deploy-pages@v5
+      - id: deployment 
+        uses: actions/deploy-pages@v5
